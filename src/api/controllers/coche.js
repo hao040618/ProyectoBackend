@@ -13,7 +13,7 @@ const getCars = async (req, res, next) => {
 
 const postCar = async (req, res, next) => {
     try {
-        if (req.user.rol[0] === "Admin") {
+        if (req.user.rol === "Admin") {
 
         const newCar = new Coche(req.body);
 
@@ -43,7 +43,7 @@ const deleteCar = async (req, res, next) => {
             delCarUserArray = req.user.rentedCar.splice(req.user.rentedCar.indexOf(id), 1);
             await req.user.save();
             // carDeleted = await Coche.findByIdAndDelete(id);            
-        } else if (req.user.rol[0] === "Admin") {
+        } else if (req.user.rol === "Admin") {
             if (userRentedCar) {
                 delCarUserArray = userRentedCar.rentedCar.splice(userRentedCar.rentedCar.indexOf(id), 1);
                 await userRentedCar.save();
@@ -84,7 +84,7 @@ const updateCar = async (req, res, next) => {
             newCar.type = oldCar.type;
         } 
 
-        if (req.user.rol[0] === "Admin") {
+        if (req.user.rol === "Admin") {
             const carUpdated = await Coche.findByIdAndUpdate(id, newCar, {
                 new: true 
             });

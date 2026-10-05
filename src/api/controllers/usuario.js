@@ -64,7 +64,7 @@ const updateUser = async (req, res, next) => {
         const oldUser = await User.findById(id);
         const duplicatedCar = await User.findOne({ rentedCar: newUser.rentedCar[0] });
 
-        if (req.user._id.toString() === id || req.user.rol[0] === "Admin") {
+        if (req.user._id.toString() === id || req.user.rol === "Admin") {
             if (newUser.rentedCar.length === 0) {
                 newUser.rentedCar = [...oldUser.rentedCar, ...newUser.rentedCar];
             } else if (newUser.rentedCar.length > 0 && duplicatedCar) {
@@ -75,7 +75,7 @@ const updateUser = async (req, res, next) => {
 
             if (newUser.rol.length === 0) {
                 newUser.rol = oldUser.rol;
-            } else if (oldUser.rol[0] === "Admin" || req.user.rol[0] === "Admin") {
+            } else if (oldUser.rol[0] === "Admin" || req.user.rol === "Admin") {
                 newUser.rol = newUser.rol;
             } else {
                 return res.status(401).json("No autorizado");
@@ -103,7 +103,7 @@ const deleteUser = async (req, res, next) => {
     try {
         const { id } = req.params;
         
-        if (id === req.user._id.toString() || req.user.rol[0] === "Admin") {
+        if (id === req.user._id.toString() || req.user.rol === "Admin") {
             const userDeleted = await User.findByIdAndDelete(id);
             return res.status(200).json({
                 message: "Usuario eliminado",
